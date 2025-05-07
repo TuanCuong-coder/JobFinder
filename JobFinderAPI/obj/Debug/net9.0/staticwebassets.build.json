@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "IWKWQQhQiuc6rjORhpEbJzzbESG3eXT9r7NkdPuGFuM=",
+  "Source": "JobFinderAPI",
+  "BasePath": "_content/JobFinderAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}

@@ -39,11 +39,11 @@ CREATE TABLE Tep_tin (
     nguoi_dung_id INT FOREIGN KEY REFERENCES Nguoi_dung(id),
     duong_dan NVARCHAR(255),
     ten_tap_tin NVARCHAR(255),
-    loai NVARCHAR(20), -- 'pdf', 'image'
+    loai NVARCHAR(20),
     ngay_tai DATETIME DEFAULT GETDATE()
 );
 
---việc làm 
+
 CREATE TABLE Cong_viec (
     id INT PRIMARY KEY IDENTITY,
     tieu_de NVARCHAR(255),
@@ -53,7 +53,7 @@ CREATE TABLE Cong_viec (
     nha_tuyen_dung_id INT FOREIGN KEY REFERENCES Nguoi_dung(id),
     ngay_dang DATETIME DEFAULT GETDATE()
 );
---ứng tuyển
+
 CREATE TABLE Nop_don (
     id INT PRIMARY KEY IDENTITY,
     cong_viec_id INT FOREIGN KEY REFERENCES Cong_viec(id),
@@ -70,52 +70,16 @@ CREATE TABLE Thong_bao (
     loai NVARCHAR(50), -- 'nop_cv', 'xem_cv'
     trang_thai NVARCHAR(20) DEFAULT 'chua_doc', -- 'chua_doc', 'da_doc'
     thoi_gian DATETIME DEFAULT GETDATE(),
-	--cong_viec_id INT;
 );
 
--- Bảng Người dùng - Lĩnh vực (nhiều lĩnh vực / ứng viên)
+
 CREATE TABLE Linh_vuc_nguoi_dung (
     id INT PRIMARY KEY IDENTITY,
     nguoi_dung_id INT FOREIGN KEY REFERENCES Nguoi_dung(id),
     linh_vuc_id INT FOREIGN KEY REFERENCES Linh_vuc(id)
 );
 
---procedure tao thong bao tu dong
-go
---thong bao UV da nop CV
-CREATE PROCEDURE TaoThongBaoNopCV
-    @ung_vien_id INT,
-    @cong_viec_id INT,
-    @cv_id INT
-AS
-BEGIN
-    DECLARE @nha_tuyen_dung_id INT;
-    SELECT @nha_tuyen_dung_id = nha_tuyen_dung_id FROM Cong_viec WHERE id = @cong_viec_id;
 
-    DECLARE @noi_dung NVARCHAR(MAX);
-    SET @noi_dung = N'Ứng viên ID ' + CAST(@ung_vien_id AS NVARCHAR) +
-                    N' đã nộp CV ID ' + CAST(@cv_id AS NVARCHAR) +
-                    N' cho công việc ID ' + CAST(@cong_viec_id AS NVARCHAR);
-
-    INSERT INTO Thong_bao (nguoi_nhan_id, noi_dung, loai, trang_thai)
-    VALUES (@nha_tuyen_dung_id, @noi_dung, N'nop_cv', N'chua_doc');
-END
-
---thong bao NTD da xem CV
-go
-CREATE PROCEDURE TaoThongBaoXemCV
-    @cong_viec_id INT,
-    @ung_vien_id INT
-AS
-BEGIN
-    DECLARE @noi_dung NVARCHAR(MAX);
-    SET @noi_dung = N'Nhà tuyển dụng đã xem CV của bạn cho công việc ID ' + CAST(@cong_viec_id AS NVARCHAR);
-
-    INSERT INTO Thong_bao (nguoi_nhan_id, noi_dung, loai, trang_thai)
-    VALUES (@ung_vien_id, @noi_dung, N'xem_cv', N'chua_doc');
-END
-
--- Bảng Yêu thích (Ứng viên yêu thích công việc)
 CREATE TABLE Yeu_thich (
     id INT PRIMARY KEY IDENTITY,
     ung_vien_id INT FOREIGN KEY REFERENCES Nguoi_dung(id),
@@ -123,7 +87,52 @@ CREATE TABLE Yeu_thich (
     ngay_yeu_thich DATETIME DEFAULT GETDATE()
 );
 
---du lieu mau
+Create PROCEDURE TaoThongBaoNopCV
+    @ung_vien_id INT,
+    @cong_viec_id INT,
+    @cv_id INT
+AS
+BEGIN
+    DECLARE @nha_tuyen_dung_id INT;
+    DECLARE @ten_ung_vien NVARCHAR(100);
+    DECLARE @tieu_de_cv NVARCHAR(255);
+    DECLARE @tieu_de_cong_viec NVARCHAR(255);
+    DECLARE @noi_dung NVARCHAR(MAX);
+
+    SELECT 
+        @nha_tuyen_dung_id = nha_tuyen_dung_id,
+        @tieu_de_cong_viec = tieu_de
+    FROM Cong_viec
+    WHERE id = @cong_viec_id;
+
+    SELECT @ten_ung_vien = ho_ten FROM Nguoi_dung WHERE id = @ung_vien_id;
+    SELECT @tieu_de_cv = tieu_de FROM CV WHERE id = @cv_id;
+    SET @noi_dung = N'Ứng viên "' + @ten_ung_vien + N'" đã nộp CV "' 
+                    + @tieu_de_cv + N'" cho công việc "' + @tieu_de_cong_viec + N'"';
+
+    
+    INSERT INTO Thong_bao (nguoi_nhan_id, noi_dung, loai, trang_thai)
+    VALUES (@nha_tuyen_dung_id, @noi_dung, N'nop_cv', N'chua_doc');
+END
+
+
+Create PROCEDURE TaoThongBaoXemCV
+    @cong_viec_id INT,
+    @ung_vien_id INT
+AS
+BEGIN
+    DECLARE @tieu_de_cong_viec NVARCHAR(255);
+    DECLARE @noi_dung NVARCHAR(MAX);
+
+    SELECT @tieu_de_cong_viec = tieu_de FROM Cong_viec WHERE id = @cong_viec_id;
+    SET @noi_dung = N'Nhà tuyển dụng đã xem CV của bạn cho công việc "' + @tieu_de_cong_viec + N'"';
+
+    INSERT INTO Thong_bao (nguoi_nhan_id, noi_dung, loai, trang_thai)
+    VALUES (@ung_vien_id, @noi_dung, N'xem_cv', N'chua_doc');
+END
+
+
+
 INSERT INTO Linh_vuc (ten_linh_vuc) VALUES
 (N'Công nghệ thông tin'),
 (N'Kế toán - Kiểm toán'),
@@ -169,11 +178,59 @@ VALUES (N'Tuyển cbnn', N'Mô tả công việc marketing tại Hà Nội...', 
 INSERT INTO Nop_don (cong_viec_id, ung_vien_id, cv_id)
 VALUES (1, 1, 1);
 
---t.báo cho NTD: có UV ứng tuyển
 EXEC TaoThongBaoNopCV @ung_vien_id = 1, @cong_viec_id = 1, @cv_id = 1;
 
---NTD đã xem CV
 UPDATE Nop_don SET da_xem = 1 WHERE id = 1;
 
---T.báo cho UV
 EXEC TaoThongBaoXemCV @cong_viec_id = 1, @ung_vien_id = 1;
+
+
+SELECT vai_tro, COUNT(*) AS SoLuong
+FROM Nguoi_dung
+GROUP BY vai_tro;
+
+SELECT cong_viec_id, COUNT(*) AS so_luong_ung_vien
+FROM Nop_don
+GROUP BY cong_viec_id;
+
+
+DECLARE @ung_vien_id INT = 7; 
+SELECT DISTINCT cv.*
+FROM Cong_viec cv
+JOIN Linh_vuc_nguoi_dung lvud ON cv.linh_vuc_id = lvud.linh_vuc_id
+WHERE lvud.nguoi_dung_id = @ung_vien_id;
+
+
+SELECT cv.*
+FROM Nop_don nd
+JOIN Cong_viec cv ON nd.cong_viec_id = cv.id
+WHERE nd.ung_vien_id = 7;
+
+
+
+DECLARE @keyword NVARCHAR(100) = N'marketing';  
+SELECT *
+FROM Cong_viec
+WHERE tieu_de LIKE '%' + @keyword + '%'
+   OR mo_ta LIKE '%' + @keyword + '%';
+
+ DECLARE @cong_viec_id INT = 1;  
+
+SELECT COUNT(*) AS SoLuongCVDaNop
+FROM Nop_don
+WHERE cong_viec_id = @cong_viec_id;
+
+DECLARE @cong_viec_id INT = 1;
+SELECT 
+    cviec.id AS cong_viec_id,
+    cviec.tieu_de AS ten_cong_viec,
+    uv.ho_ten AS ten_ung_vien,
+    cv.tieu_de AS ten_cv
+FROM Nop_don nd
+JOIN Cong_viec cviec ON nd.cong_viec_id = cviec.id
+JOIN Nguoi_dung uv ON nd.ung_vien_id = uv.id
+JOIN CV cv ON nd.cv_id = cv.id
+WHERE cviec.id = @cong_viec_id;
+
+
+SELECT * FROM Nop_don WHERE cv_id = 1;

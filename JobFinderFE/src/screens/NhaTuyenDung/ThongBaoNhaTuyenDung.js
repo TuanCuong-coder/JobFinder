@@ -1,62 +1,66 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   FlatList,
-  StyleSheet,
   Alert,
   TouchableOpacity,
+  StyleSheet,
 } from 'react-native';
 import api from '../../services/api';
 
-const ThongBaoNhaTuyenDung = ({navigation}) => {
-  const [thongBao, setThongBao] = useState([]);
+const ThongBaoNhaTuyenDung = ({ navigation }) => {
+  const [danhSachThongBao, setDanhSachThongBao] = useState([]);
 
-  useEffect(() => {
-    const fetchThongBao = async () => {
-      try {
-        const res = await api.get('/ThongBao/NhaTuyenDung');
-        setThongBao(res.data);
-      } catch (err) {
-        console.error('Lỗi khi tải thông báo nhà tuyển dụng:', err);
-        Alert.alert('Lỗi', 'Không thể tải thông báo');
-      }
-    };
-    fetchThongBao();
-  }, []);
-
-  const handleNotificationPress = baiDangId => {
-    if (!baiDangId) {
-      Alert.alert('Lỗi', 'Không tìm thấy bài đăng liên quan.');
-      return;
+  //Gọi API để lấy thông báo từ server
+  const taiThongBao = async () => {
+    try {
+      const response = await api.get('/ThongBao/NhaTuyenDung');
+      setDanhSachThongBao(response.data);
+    } catch (loi) {
+      console.error('Không thể tải thông báo:', loi);
+      Alert.alert('Lỗi', 'Đã xảy ra lỗi khi lấy thông báo');
     }
-    navigation.navigate('ChiTietBaiDang', {id: baiDangId});
   };
 
-  const renderItem = ({item}) => (
+  useEffect(() => {
+    taiThongBao();
+  }, []);
+
+  // Hiển thị từng thông báo
+  const renderThongBao = ({ item }) => (
     <TouchableOpacity
-      // onPress={() => handleNotificationPress(item.baiDangId)}
-      activeOpacity={0.7}>
-      <View style={styles.card}>
-        <Text style={styles.message}>{item.noiDung}</Text>
-        <Text style={styles.date}>
-          {new Date(item.thoiGian).toLocaleString()}
-        </Text>
-      </View>
+      style={styles.thongBaoBox}
+      onPress={() => chuyenDenChiTiet(item.baiDangId)}
+    >
+      <Text style={styles.noiDung}>{item.noiDung}</Text>
+      <Text style={styles.thoiGian}>
+        {new Date(item.thoiGian).toLocaleString('vi-VN')}
+      </Text>
     </TouchableOpacity>
   );
 
+  // Chuyển sang màn hình chi tiết
+  const chuyenDenChiTiet = (idBaiDang) => {
+    if (!idBaiDang) {
+      Alert.alert('Lỗi', 'Không có bài đăng phù hợp.');
+      return;
+    }
+    navigation.navigate('ChiTietBaiDang', { id: idBaiDang });
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>🔔 Thông báo nhà tuyển dụng</Text>
-      {thongBao.length === 0 ? (
-        <Text style={styles.emptyText}>Hiện không có thông báo nào.</Text>
+    <View style={styles.manHinh}>
+      <Text style={styles.tieuDe}>📢 Trung tâm thông báo</Text>
+
+      {danhSachThongBao.length === 0 ? (
+        <Text style={styles.trangThai}>Không có thông báo nào.</Text>
       ) : (
         <FlatList
-          data={thongBao}
-          keyExtractor={item => item.id.toString()}
-          renderItem={renderItem}
-          contentContainerStyle={{paddingBottom: 20}}
+          data={danhSachThongBao}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderThongBao}
+          contentContainerStyle={{ paddingBottom: 40 }}
         />
       )}
     </View>
@@ -66,41 +70,41 @@ const ThongBaoNhaTuyenDung = ({navigation}) => {
 export default ThongBaoNhaTuyenDung;
 
 const styles = StyleSheet.create({
-  container: {
+  manHinh: {
     flex: 1,
+    backgroundColor: '#FAFAFA',
+    padding: 20,
+  },
+  tieuDe: {
+    fontSize: 22,
+    fontWeight: '700',
+    marginBottom: 16,
+    color: '#2E7D32',
+  },
+  thongBaoBox: {
+    backgroundColor: '#E3F2FD',
+    borderRadius: 12,
     padding: 16,
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 12,
-    color: '#388E3C', 
-  },
-  card: {
-    padding: 14,
-    marginBottom: 12,
-    borderRadius: 10,
-    backgroundColor: '#e8f0fe',
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
+    marginBottom: 14,
+    shadowColor: '#aaa',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
     shadowRadius: 4,
-    shadowOffset: {width: 0, height: 2},
     elevation: 2,
   },
-  message: {
+  noiDung: {
     fontSize: 16,
-    color: '#1a1a1a',
+    color: '#212121',
   },
-  date: {
-    marginTop: 6,
-    color: '#666',
+  thoiGian: {
     fontSize: 13,
+    color: '#757575',
+    marginTop: 8,
   },
-  emptyText: {
+  trangThai: {
     fontSize: 16,
-    color: '#888',
+    color: '#9E9E9E',
     textAlign: 'center',
-    marginTop: 30,
+    marginTop: 32,
   },
 });

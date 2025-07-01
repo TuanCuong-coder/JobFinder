@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using JobFinderAPI.Models;
 using Microsoft.AspNetCore.Authorization;
+using JobFinderAPI.Models;
 using System.Security.Claims;
 
 namespace JobFinderAPI.Controllers
@@ -17,33 +17,40 @@ namespace JobFinderAPI.Controllers
             _context = context;
         }
 
+        // thêm hoặc xoá yêu thích công việc
         [Authorize]
-      [HttpPost("toggle")]
-public async Task<IActionResult> ToggleYeuThich([FromBody] ToggleYeuThichRequest request)
-{
-    var ungVienId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
-    var yeuThich = await _context.YeuThiches
-        .FirstOrDefaultAsync(x => x.UngVienId == ungVienId && x.CongViecId == request.CongViecId);
-
-    if (yeuThich != null)
-    {
-        _context.YeuThiches.Remove(yeuThich);
-        await _context.SaveChangesAsync();
-        return Ok(new { isYeuThich = false });
-    }
-    else
-    {
-        _context.YeuThiches.Add(new YeuThich
+        [HttpPost("toggle")]
+        public async Task<IActionResult> ToggleYeuThich([FromBody] ToggleYeuThichRequest request)
         {
-            UngVienId = ungVienId,
-            CongViecId = request.CongViecId,
-            NgayYeuThich = DateTime.UtcNow
-        });
-        await _context.SaveChangesAsync();
-        return Ok(new { isYeuThich = true });
-    }
-}
+            var ungVienId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
 
+            var yeuThich = await _context.YeuThiches
+                .FirstOrDefaultAsync(x => x.UngVienId == ungVienId && x.CongViecId == request.CongViecId);
+
+            if (yeuThich != null)
+            {
+                // Nếu đã tồn tại, thì xoá
+                _context.YeuThiches.Remove(yeuThich);
+                await _context.SaveChangesAsync();
+
+                return Ok(new { isYeuThich = false });
+            }
+            else
+            {
+                // Nếu chưa tồn tại, thì thêm mới
+                _context.YeuThiches.Add(new YeuThich
+                {
+                    UngVienId = ungVienId,
+                    CongViecId = request.CongViecId,
+                    NgayYeuThich = DateTime.UtcNow
+                });
+
+                await _context.SaveChangesAsync();
+                return Ok(new { isYeuThich = true });
+            }
+        }
+
+        // Lấy danh sách yêu thích của ứng viên theo ID ứng viên
         [HttpGet("ungvien/{ungVienId}")]
         public async Task<ActionResult<IEnumerable<YeuThichDTO>>> GetYeuThichByUngVienId(int ungVienId)
         {
@@ -60,23 +67,25 @@ public async Task<IActionResult> ToggleYeuThich([FromBody] ToggleYeuThichRequest
                     NgayYeuThich = yt.NgayYeuThich
                 })
                 .ToListAsync();
+
             return yeuThiches;
         }
 
-      [Authorize]
-[HttpGet("check")]
-public async Task<IActionResult> CheckYeuThich(int congViecId)
-{
-    var ungVienId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+        //kiem tra xem cong viec da yeu thich hay chua
+        [Authorize]
+        [HttpGet("check")]
+        public async Task<IActionResult> CheckYeuThich(int congViecId)
+        {
+            var ungVienId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
 
-    var isYeuThich = await _context.YeuThiches
-        .AnyAsync(x => x.UngVienId == ungVienId && x.CongViecId == congViecId);
+            var isYeuThich = await _context.YeuThiches
+                .AnyAsync(x => x.UngVienId == ungVienId && x.CongViecId == congViecId);
 
-    return Ok(new { isYeuThich });
-}
+            return Ok(new { isYeuThich });
+        }
     }
-
-    // DTO yêu cầu toggle
+    
+    //nut trai tim yeu thich 
     public class ToggleYeuThichRequest
     {
         public int UngVienId { get; set; }

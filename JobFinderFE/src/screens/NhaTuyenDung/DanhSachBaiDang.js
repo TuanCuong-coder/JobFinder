@@ -33,7 +33,6 @@ const DanhSachBaiDang = ({navigation}) => {
   );
 
   const renderBaiDang = ({item}) => {
-    console.log('Render bài đăng:', item.id); 
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('ChiTietBaiDang', {id: item.id})}>
@@ -56,17 +55,21 @@ const DanhSachBaiDang = ({navigation}) => {
       ) : baiDangs.length === 0 ? (
         <Text style={styles.statusMessage}>Bạn chưa có bài đăng nào</Text>
       ) : (
-        <FlatList
-          data={baiDangs}
-          renderItem={renderBaiDang}
-          keyExtractor={item => item.id.toString()}
-          initialNumToRender={5}
-          contentContainerStyle={styles.listContent}
-        />
+        <>
+          <Text style={styles.counterText}>
+            Tổng cộng: {baiDangs.length} bài đăng
+          </Text>
+
+          <FlatList
+            data={baiDangs}
+            renderItem={renderBaiDang}
+            keyExtractor={item => item.id.toString()}
+            contentContainerStyle={styles.listContent}
+          />
+        </>
       )}
 
       <TouchableOpacity
-        testID="create-post-button"
         style={styles.floatingButton}
         onPress={() => navigation.navigate('TaoBaiDang')}>
         <Text style={styles.floatingButtonText}>+</Text>
@@ -134,6 +137,13 @@ const styles = StyleSheet.create({
     marginTop: 40,
     fontSize: 16,
     color: '#666',
+  },
+  counterText: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#388E3C',
+    marginLeft: 16,
+    marginBottom: 8,
   },
 });
 

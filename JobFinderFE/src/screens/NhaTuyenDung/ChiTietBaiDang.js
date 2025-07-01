@@ -19,17 +19,18 @@ const ChiTietBaiDang = ({route, navigation}) => {
   useEffect(() => {
     navigation.setOptions({title: 'Chi tiết bài đăng'});
 
-    const fetchData = async () => {
+    const loadChiTietBaiDang = async () => {
       try {
         const res = await api.get(`/BaiDang/${id}`);
         setBaiDang(res.data);
+        console.log('Chi tiết bài đăng:', res.data); 
       } catch (error) {
         console.error('Lỗi khi tải chi tiết bài đăng:', error);
       }
     };
 
     if (isFocused) {
-      fetchData();
+      loadChiTietBaiDang();
     }
   }, [id, isFocused]);
 
@@ -60,49 +61,52 @@ const ChiTietBaiDang = ({route, navigation}) => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>{baiDang.tieuDe}</Text>
+    <ScrollView contentContainerStyle={styles.screenContainer}>
+      <Text style={styles.postTitle}>{baiDang.tieuDe}</Text>
 
-      <Text style={styles.label}>Lĩnh vực:</Text>
-      <Text style={styles.infoText}>
+      <Text style={styles.fieldLabel}>Lĩnh vực:</Text>
+      <Text style={styles.fieldValue}>
         {typeof baiDang.linhVuc === 'string'
           ? baiDang.linhVuc
           : baiDang.linhVuc?.ten}
       </Text>
 
-      <Text style={styles.label}>Hình thức:</Text>
-      <Text style={styles.infoText}>
+      <Text style={styles.fieldLabel}>Hình thức:</Text>
+      <Text style={styles.fieldValue}>
         {typeof baiDang.hinhThuc === 'string'
           ? baiDang.hinhThuc
           : baiDang.hinhThuc?.ten}
       </Text>
 
-      <Text style={styles.label}>Mô tả:</Text>
-      <Text style={styles.infoText}>{baiDang.moTa}</Text>
+      <Text style={styles.fieldLabel}>Mô tả:</Text>
+      <Text style={styles.fieldValue}>{baiDang.moTa}</Text>
 
-      <Text style={styles.label}>Ngày đăng:</Text>
-      <Text style={styles.infoText}>
+      <Text style={styles.fieldLabel}>Ngày đăng:</Text>
+      <Text style={styles.fieldValue}>
         {new Date(baiDang.ngayDang).toLocaleDateString()}
       </Text>
 
       <TouchableOpacity
+        testID="btn-xem-ung-vien"
         onPress={() => navigation.navigate('DanhSachUngVien', {congViecId: id})}
-        style={[styles.button, {backgroundColor: '#007bff'}]} // Xanh dương
+        style={[styles.actionButton, {backgroundColor: '#007bff'}]}
       >
-        <Text style={styles.buttonText}>Xem danh sách ứng viên</Text>
+        <Text style={styles.actionButtonText}>Xem danh sách ứng viên</Text>
       </TouchableOpacity>
 
-      <View style={styles.buttonGroup}>
+      <View style={styles.actionButtonsContainer}>
         <TouchableOpacity
-          style={[styles.button, {backgroundColor: '#dc3545', flex: 1}]}
+          testID="btn-xoa"
+          style={[styles.actionButton, {backgroundColor: '#dc3545'}]}
           onPress={handleDelete}>
-          <Text style={styles.buttonText}>Xoá bài đăng</Text>
+          <Text style={styles.actionButtonText}>Xoá bài đăng</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.button, {backgroundColor: '#388E3C', flex: 1}]}
+          testID="btn-sua"
+          style={[styles.actionButton, {backgroundColor: '#388E3C'}]}
           onPress={() => navigation.navigate('SuaBaiDang', {id})}>
-          <Text style={styles.buttonText}>Sửa bài đăng</Text>
+          <Text style={styles.actionButtonText}>Sửa bài đăng</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -110,40 +114,59 @@ const ChiTietBaiDang = ({route, navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-    paddingBottom: 40,
-    backgroundColor: '#fff',
+  screenContainer: {
+    padding: 20,
+    paddingBottom: 72, 
+    backgroundColor: '#F9F9F9',
   },
-  title: {
-    fontSize: 24,
+  postTitle: {
+    fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 16,
-    color: '#388E3C',
+    marginBottom: 20,
+    color: '#2E7D32',
+    textAlign: 'center',
   },
-  label: {
-    fontWeight: 'bold',
-    marginTop: 12,
-    color: '#388E3C',
-  },
-  infoText: {
+  fieldLabel: {
+    fontWeight: '600',
     fontSize: 16,
-    marginBottom: 8,
-    color: '#444',
+    marginTop: 14,
+    marginBottom: 4,
+    color: '#2E7D32',
   },
-  buttonGroup: {
-    marginTop: 24,
+  fieldValue: {
+    fontSize: 16,
+    lineHeight: 22,
+    color: '#333',
+    backgroundColor: '#FFF',
+    padding: 10,
+    borderRadius: 8,
+    elevation: 1,
+    shadowColor: '#ccc',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
+  actionButtonsContainer: {
+    marginTop: 28,
     flexDirection: 'row',
-    gap: 12,
+    justifyContent: 'space-between',
   },
-  button: {
-    padding: 12,
-    borderRadius: 6,
+  actionButton: {
+    flex: 1,
+    paddingVertical: 14,
+    marginHorizontal: 6,
+    borderRadius: 10,
     alignItems: 'center',
+    elevation: 2,
+    shadowColor: '#aaa',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
   },
-  buttonText: {
-    color: 'white',
+  actionButtonText: {
+    color: '#FFF',
     fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 

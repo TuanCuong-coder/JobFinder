@@ -84,8 +84,8 @@ public async Task<IActionResult> TaoBaiDang([FromBody] TaoBaiDangModel model)
                 cv.Id,
                 cv.TieuDe,
                 cv.MoTa,
-                LinhVuc = cv.LinhVuc!.TenLinhVuc,
-                HinhThuc = cv.HinhThuc!.TenHinhThuc,    
+                LinhVuc = new { cv.LinhVucId, Ten = cv.LinhVuc!.TenLinhVuc },
+                HinhThuc = new { cv.HinhThucId, Ten = cv.HinhThuc!.TenHinhThuc },
                 cv.NgayDang
             });
         }
@@ -105,7 +105,8 @@ public async Task<IActionResult> TaoBaiDang([FromBody] TaoBaiDangModel model)
             cv.TieuDe = model.TieuDe;
             cv.MoTa = model.MoTa;
             cv.LinhVucId = model.LinhVucId;
-            cv.HinhThucId = model.HinhThucId;   
+            cv.HinhThucId = model.HinhThucId;
+
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Cập nhật bài đăng thành công" });
@@ -125,6 +126,11 @@ public async Task<IActionResult> XoaBaiDang(int id)
 
     try
     {
+        // Xoá các đơn ứng tuyển liên quan trước
+        var donUngTuyens = await _context.NopDons
+            .Where(nd => nd.CongViecId == id)
+            .ToListAsync();
+
         _context.NopDons.RemoveRange(donUngTuyens);
 
         // Xoá bài đăng

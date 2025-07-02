@@ -12,12 +12,10 @@ namespace JobFinderAPI.Controllers
     public class CVController : ControllerBase
     {
         private readonly TestTopCvContext _context;
-
         public CVController(TestTopCvContext context)
         {
             _context = context;
         }
-
         // Lấy danh sách tất cả CV của người dùng
         [HttpGet]
         public async Task<IActionResult> GetListCV()
@@ -42,7 +40,6 @@ namespace JobFinderAPI.Controllers
                 return StatusCode(500, "Lỗi server: " + ex.Message);
             }
         }
-
         // Tạo mới CV
         [HttpPost]
         [Authorize]
@@ -68,7 +65,6 @@ namespace JobFinderAPI.Controllers
                 return StatusCode(500, "Lỗi server: " + ex.Message);
             }
         }
-
         // Lấy chi tiết 1 CV
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCVById(int id)
@@ -95,7 +91,6 @@ namespace JobFinderAPI.Controllers
                 return StatusCode(500, "Lỗi server: " + ex.Message);
             }
         }
-
         // Cập nhật CV
         [HttpPut("{id}")]
         [Authorize]
@@ -107,7 +102,6 @@ namespace JobFinderAPI.Controllers
                 var cv = await _context.Cvs.FirstOrDefaultAsync(c => c.Id == id && c.UngVienId == userId);
                 if (cv == null)
                     return NotFound("Không tìm thấy CV");
-
                 cv.TieuDe = request.TieuDe ?? cv.TieuDe;
                 cv.NoiDung = request.NoiDung ?? cv.NoiDung;
                 cv.AnhDaiDien = request.AnhDaiDien ?? cv.AnhDaiDien;
@@ -119,7 +113,6 @@ namespace JobFinderAPI.Controllers
                 return StatusCode(500, "Lỗi server: " + ex.Message);
             }
         }
-
         // Xóa CV
         [HttpDelete("{id}")]
         [Authorize]
@@ -178,14 +171,13 @@ namespace JobFinderAPI.Controllers
             }
         }
     }
-    
     public class CreateCVRequest
     {
         public string TieuDe { get; set; } = string.Empty;
         public string NoiDung { get; set; } = string.Empty;
         public string? AnhDaiDien { get; set; }
     }
-
+    
     public class UpdateCVRequest
     {
         public string? TieuDe { get; set; }

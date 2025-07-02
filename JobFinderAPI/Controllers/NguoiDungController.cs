@@ -20,29 +20,28 @@ namespace JobFinderAPI.Controllers
             _jwtHelper = jwtHelper;
         }
 
-        [HttpPost("dang-ky")]
-        public async Task<IActionResult> DangKy([FromBody] DangKyDTO dto)
+        //lay thong tin nguoi dung
+        [HttpGet("thong-tin")]
+        [Authorize]
+        public async Task<IActionResult> LayThongTin()
         {
-            if (await _context.NguoiDungs.AnyAsync(x => x.Email == dto.Email))
-                return BadRequest(new { message = "Email đã tồn tại" });
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var user = await _context.NguoiDungs.FindAsync(userId);
 
-         
-            var user = new NguoiDung
+            if (user == null)
+                return NotFound(new { message = "Không tìm thấy người dùng" });
+
+            return Ok(new
             {
-                HoTen = dto.HoTen,
-                Email = dto.Email,
-                MatKhau = dto.MatKhau,
-                VaiTro = dto.VaiTro,
-                AnhDaiDien = dto.AnhDaiDien // AnhDaiDien có thể là null
-            };
-
-            _context.NguoiDungs.Add(user);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Đăng ký thành công", user.Id });
+                id = user.Id,
+                ho_ten = user.HoTen,
+                email = user.Email,
+                vai_tro = user.VaiTro,
+                anh_dai_dien = user.AnhDaiDien
+            });
         }
 
-        // Đăng nhập
+        //dang nhap
         [HttpPost("dang-nhap")]
         public async Task<IActionResult> DangNhap([FromBody] DangNhapDTO dto)
         {
@@ -69,44 +68,58 @@ namespace JobFinderAPI.Controllers
             });
         }
 
-[HttpGet("thong-tin")]
-[Authorize]
-public async Task<IActionResult> LayThongTin()
-{
-    var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-    var user = await _context.NguoiDungs.FindAsync(userId);
+        //dang ky
+        [HttpPost("dang-ky")]
+        public async Task<IActionResult> DangKy([FromBody] DangKyDTO dto)
+        {
+            if (await _context.NguoiDungs.AnyAsync(x => x.Email == dto.Email))
+                return BadRequest(new { message = "Email đã tồn tại" });
 
-  
-    return Ok(new
-    {
-        id = user.Id,
-        ho_ten = user.HoTen,
-        email = user.Email,
-        vai_tro = user.VaiTro,
-        anh_dai_dien = user.AnhDaiDien
-    });
-}
+            if (string.IsNullOrEmpty(dto.VaiTro) || (dto.VaiTro != "ung_vien" && dto.VaiTro != "nha_tuyen_dung"))
+                return BadRequest(new { message = "Vai trò không hợp lệ" });
 
-        // GET api/NguoiDung/so-luong-cong-viec
+            var user = new NguoiDung
+            {
+                HoTen = dto.HoTen,
+                Email = dto.Email,
+                MatKhau = dto.MatKhau,
+                VaiTro = dto.VaiTro,
+                AnhDaiDien = dto.AnhDaiDien
+            };
+
+            _context.NguoiDungs.Add(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Đăng ký thành công", user.Id });
+        }
+
+        //de xuat cong viec
         [HttpGet("so-luong-cong-viec")]
         [Authorize]
-public async Task<IActionResult> SoLuongCongViec()
-{
-    var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        public async Task<IActionResult> SoLuongCongViec()
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
+            var daUngTuyen = await _context.NopDons
+                .CountAsync(n => n.UngVienId == userId);
 
-    var fieldIds = await _context.LinhVucNguoiDungs
-        .Where(lv => lv.NguoiDungId == userId)
-        .Select(lv => lv.LinhVucId)
-        .ToListAsync();
+            var uaThich = await _context.YeuThiches
+                .CountAsync(y => y.UngVienId == userId);
 
-    var phuHop = await _context.CongViecs
-        .CountAsync(j => fieldIds.Contains(j.LinhVucId));
+            var fieldIds = await _context.LinhVucNguoiDungs
+                .Where(lv => lv.NguoiDungId == userId)
+                .Select(lv => lv.LinhVucId)
+                .ToListAsync();
 
-    return Ok(new {
-        phuHop
-    });
-}
+            var phuHop = await _context.CongViecs
+                .CountAsync(j => fieldIds.Contains(j.LinhVucId));
 
+            return Ok(new
+            {
+                daUngTuyen,
+                uaThich,
+                phuHop
+            });
+        }
     }
 }

@@ -75,18 +75,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#F4F6F8',
   },
   header: {
-    backgroundColor: '#4CAF50',
-    paddingVertical: 16,
-    paddingHorizontal: 20,
     borderBottomLeftRadius: 20,
+    backgroundColor: '#4CAF50',
+    paddingVertical: 14,
+    paddingHorizontal: 20,
     borderBottomRightRadius: 20,
     elevation: 3,
   },
-  headerText: {
-    fontSize: 20,
-    fontWeight: '700',
+  headerText: {fontWeight: '700',
     color: '#fff',
     textAlign: 'center',
+    fontSize: 20,
+    
   },
   listContent: {
     padding: 20,
@@ -106,19 +106,19 @@ const styles = StyleSheet.create({
     borderLeftColor: '#4CAF50',
   },
   cardContent: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#37474F',
     fontWeight: '500',
   },
   cardTime: {
     fontSize: 13,
     color: '#78909C',
-    marginTop: 8,
+    marginTop: 10,
   },
   emptyText: {
     fontSize: 16,
     color: '#9E9E9E',
     textAlign: 'center',
-    marginTop: 32,
+    marginTop: 34,
   },
 });

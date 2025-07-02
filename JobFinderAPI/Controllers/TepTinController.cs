@@ -25,7 +25,6 @@ public class TepTinController : ControllerBase
             return BadRequest("Chỉ được upload ảnh");
 
         var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
         var fileName = $"{Guid.NewGuid()}_{file.FileName}";
         var filePath = Path.Combine(_env.WebRootPath, "uploads", fileName);
 
@@ -44,7 +43,6 @@ public class TepTinController : ControllerBase
 
         _context.TepTins.Add(tepTin);
         await _context.SaveChangesAsync();
-
         return Ok(new { message = "Tải ảnh thành công", id = tepTin.Id });
     }
 
@@ -61,7 +59,6 @@ public class TepTinController : ControllerBase
                 duongDan = f.DuongDan,
                 ngayTai = f.NgayTai
             }).ToListAsync();
-
         return Ok(files);
     }
 
@@ -83,11 +80,10 @@ public class TepTinController : ControllerBase
         return Ok(new { message = "Xoá tệp thành công" });
     }
 
-
-// lay file theo id 
+    // lay file theo id 
     [HttpGet("{id}")]
-public async Task<IActionResult> GetFileById(int id)
-{
+    public async Task<IActionResult> GetFileById(int id)
+    {
     var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
     var file = await _context.TepTins
@@ -104,6 +100,5 @@ public async Task<IActionResult> GetFileById(int id)
         return NotFound("Không tìm thấy tệp");
 
     return Ok(file);
-}
-
-}
+    }
+    }

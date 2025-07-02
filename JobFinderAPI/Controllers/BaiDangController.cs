@@ -47,7 +47,6 @@ namespace JobFinderAPI.Controllers
         public async Task<IActionResult> TaoBaiDang([FromBody] TaoBaiDangModel model)
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
             var congViec = new CongViec
             {
                 TieuDe = model.TieuDe,
@@ -60,10 +59,8 @@ namespace JobFinderAPI.Controllers
 
             _context.CongViecs.Add(congViec);
             await _context.SaveChangesAsync();
-
             return Ok(new { message = "Tạo bài đăng thành công", congViec.Id });
         }
-
 
         [HttpGet("{id}")]
         [Authorize(Roles = "nha_tuyen_dung")]
@@ -95,7 +92,6 @@ namespace JobFinderAPI.Controllers
         public async Task<IActionResult> SuaBaiDang(int id, [FromBody] CongViecModel model)
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
             var cv = await _context.CongViecs
                 .FirstOrDefaultAsync(c => c.Id == id && c.NhaTuyenDungId == userId);
 
@@ -106,9 +102,7 @@ namespace JobFinderAPI.Controllers
             cv.MoTa = model.MoTa;
             cv.LinhVucId = model.LinhVucId;
             cv.HinhThucId = model.HinhThucId;
-
             await _context.SaveChangesAsync();
-
             return Ok(new { message = "Cập nhật bài đăng thành công" });
         }
 
@@ -117,27 +111,22 @@ namespace JobFinderAPI.Controllers
         public async Task<IActionResult> XoaBaiDang(int id)
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
             var cv = await _context.CongViecs
                 .FirstOrDefaultAsync(c => c.Id == id && c.NhaTuyenDungId == userId);
 
             if (cv == null)
                 return NotFound(new { message = "Không tìm thấy bài đăng." });
-
             try
             {
                 // Xoá các đơn ứng tuyển liên quan trước
                 var donUngTuyens = await _context.NopDons
                     .Where(nd => nd.CongViecId == id)
                     .ToListAsync();
-
                 _context.NopDons.RemoveRange(donUngTuyens);
 
                 // Xoá bài đăng
                 _context.CongViecs.Remove(cv);
-
                 await _context.SaveChangesAsync();
-
                 return Ok(new { message = "Xoá bài đăng thành công" });
             }
             catch (Exception ex)

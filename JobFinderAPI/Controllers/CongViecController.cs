@@ -40,8 +40,9 @@ namespace JobFinderAPI.Controllers
 
             return Ok(list);
         }
+        
     // GET api/CongViec/{id}
-    [HttpGet("{id}")]
+        [HttpGet("{id}")]
     public async Task<IActionResult> LayChiTietCongViec(int id)
         {
             var congViec = await _context.CongViecs
@@ -62,7 +63,7 @@ namespace JobFinderAPI.Controllers
         if (congViec == null)
         return NotFound();
         return Ok(congViec);
-    }
+        }
 
         // goi y cong viec
         [HttpGet("goi-y")]

@@ -16,6 +16,7 @@ namespace JobFinderAPI.Controllers
         {
             _context = context;
         }
+
         // Lấy danh sách tất cả CV của người dùng
         [HttpGet]
         public async Task<IActionResult> GetListCV()
@@ -40,6 +41,7 @@ namespace JobFinderAPI.Controllers
                 return StatusCode(500, "Lỗi server: " + ex.Message);
             }
         }
+
         // Tạo mới CV
         [HttpPost]
         [Authorize]
@@ -65,6 +67,7 @@ namespace JobFinderAPI.Controllers
                 return StatusCode(500, "Lỗi server: " + ex.Message);
             }
         }
+
         // Lấy chi tiết 1 CV
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCVById(int id)
@@ -91,6 +94,7 @@ namespace JobFinderAPI.Controllers
                 return StatusCode(500, "Lỗi server: " + ex.Message);
             }
         }
+
         // Cập nhật CV
         [HttpPut("{id}")]
         [Authorize]
@@ -113,6 +117,7 @@ namespace JobFinderAPI.Controllers
                 return StatusCode(500, "Lỗi server: " + ex.Message);
             }
         }
+
         // Xóa CV
         [HttpDelete("{id}")]
         [Authorize]
@@ -136,6 +141,7 @@ namespace JobFinderAPI.Controllers
                 return StatusCode(500, "Lỗi server: " + ex.Message);
             }
         }
+
         // Xem CV - NTD
         [HttpGet("xem-cv-ntd/{cvId}")]
         public async Task<IActionResult> XemCVTuNhaTuyenDung(int cvId)
@@ -177,7 +183,7 @@ namespace JobFinderAPI.Controllers
         public string NoiDung { get; set; } = string.Empty;
         public string? AnhDaiDien { get; set; }
     }
-    
+
     public class UpdateCVRequest
     {
         public string? TieuDe { get; set; }

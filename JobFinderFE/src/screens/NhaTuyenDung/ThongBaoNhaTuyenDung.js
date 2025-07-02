@@ -70,38 +70,52 @@ const ThongBaoNhaTuyenDung = ({ navigation }) => {
 export default ThongBaoNhaTuyenDung;
 
 const styles = StyleSheet.create({
-  manHinh: {
+  container: {
     flex: 1,
-    backgroundColor: '#FAFAFA',
-    padding: 20,
+    backgroundColor: '#F4F6F8',
   },
-  tieuDe: {
-    fontSize: 22,
+  header: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    elevation: 3,
+  },
+  headerText: {
+    fontSize: 20,
     fontWeight: '700',
-    marginBottom: 16,
-    color: '#2E7D32',
+    color: '#fff',
+    textAlign: 'center',
   },
-  thongBaoBox: {
-    backgroundColor: '#E3F2FD',
+  listContent: {
+    padding: 20,
+    paddingBottom: 40,
+  },
+  card: {
+    backgroundColor: '#fff',
     borderRadius: 12,
     padding: 16,
     marginBottom: 14,
-    shadowColor: '#aaa',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
     elevation: 2,
+    borderLeftWidth: 4,
+    borderLeftColor: '#4CAF50',
   },
-  noiDung: {
+  cardContent: {
     fontSize: 16,
-    color: '#212121',
+    color: '#37474F',
+    fontWeight: '500',
   },
-  thoiGian: {
+  cardTime: {
     fontSize: 13,
-    color: '#757575',
+    color: '#78909C',
     marginTop: 8,
   },
-  trangThai: {
+  emptyText: {
     fontSize: 16,
     color: '#9E9E9E',
     textAlign: 'center',

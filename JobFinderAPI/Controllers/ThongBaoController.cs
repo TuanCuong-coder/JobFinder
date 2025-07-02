@@ -17,29 +17,6 @@ namespace JobFinderAPI.Controllers
             _context = context;
         }
 
-        // Lấy danh sách thông báo cho ứng viên (loại: 'xem_cv')
-        [HttpGet("UngVien")]
-        [Authorize]
-        public async Task<IActionResult> LayThongBaoUngVien()
-        {
-            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
-            var thongBao = await _context.ThongBaos
-                .Where(tb => tb.NguoiNhanId == userId && tb.Loai == "xem_cv")
-                .OrderByDescending(tb => tb.ThoiGian)
-                .Select(tb => new
-                {
-                    tb.Id,
-                    tb.NoiDung,
-                    tb.Loai,
-                    tb.TrangThai,
-                    tb.ThoiGian
-                })
-                .ToListAsync();
-
-            return Ok(thongBao);
-        }
-
         // Lấy danh sách thông báo cho nhà tuyển dụng (loại: 'nop_cv')
         [HttpGet("NhaTuyenDung")]
         [Authorize]
@@ -63,6 +40,29 @@ namespace JobFinderAPI.Controllers
             return Ok(thongBao);
         }
 
+        // Lấy danh sách thông báo cho ứng viên (loại: 'xem_cv')
+        [HttpGet("UngVien")]
+        [Authorize]
+        public async Task<IActionResult> LayThongBaoUngVien()
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+
+            var thongBao = await _context.ThongBaos
+                .Where(tb => tb.NguoiNhanId == userId && tb.Loai == "xem_cv")
+                .OrderByDescending(tb => tb.ThoiGian)
+                .Select(tb => new
+                {
+                    tb.Id,
+                    tb.NoiDung,
+                    tb.Loai,
+                    tb.TrangThai,
+                    tb.ThoiGian
+                })
+                .ToListAsync();
+
+            return Ok(thongBao);
+        }
+        
         // Đánh dấu 1 thông báo là đã đọc
         [HttpPost("DanhDauDaDoc/{id}")]
         [Authorize]

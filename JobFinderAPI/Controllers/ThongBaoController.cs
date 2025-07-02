@@ -36,7 +36,6 @@ namespace JobFinderAPI.Controllers
                     tb.ThoiGian
                 })
                 .ToListAsync();
-
             return Ok(thongBao);
         }
 
@@ -46,7 +45,6 @@ namespace JobFinderAPI.Controllers
         public async Task<IActionResult> LayThongBaoNhaTuyenDung()
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
             var thongBao = await _context.ThongBaos
                 .Where(tb => tb.NguoiNhanId == userId && tb.Loai == "nop_cv")
                 .OrderByDescending(tb => tb.ThoiGian)
@@ -59,7 +57,6 @@ namespace JobFinderAPI.Controllers
                     tb.ThoiGian
                 })
                 .ToListAsync();
-
             return Ok(thongBao);
         }
 
@@ -74,7 +71,6 @@ namespace JobFinderAPI.Controllers
 
             thongBao.TrangThai = "da_doc";
             await _context.SaveChangesAsync();
-
             return Ok(new { message = "Đã đánh dấu đã đọc" });
         }
 
@@ -84,10 +80,8 @@ namespace JobFinderAPI.Controllers
         public async Task<IActionResult> DemThongBaoChuaDoc()
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
             var soLuong = await _context.ThongBaos
                 .CountAsync(tb => tb.NguoiNhanId == userId && tb.TrangThai == "chua_doc");
-
             return Ok(new { soLuong });
         }
     }

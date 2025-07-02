@@ -11,10 +11,15 @@ Mục tiêu hệ thống:
 
 Công nghệ sử dụng:
 -Frontend (Mobile): React Native
+
 -Backend API: ASP.NET Core (.NET Core)
+
 -Cơ sở dữ liệu: SQL Server
+
 -Kết nối API: Giao thức HTTP/HTTPS chuẩn RESTful
+
 -Định dạng dữ liệu: JSON
+
 -Cấu trúc người dùng
 
 1. Người tìm việc:
@@ -51,13 +56,13 @@ b. Quản lý hồ sơ cá nhân:
 -Tạo và cập nhật hồ sơ cá nhân (họ tên, email, mật khẩu)
 
 c. Quản lý việc làm:
-    Người tìm việc:
+Người tìm việc:
 -Tìm kiếm công việc theo từ khoá, lĩnh vực, hình thức
 -Xem chi tiết tin tuyển dụng
 -Ứng tuyển công việc trực tiếp
 -Xem lại các công việc đã ứng tuyển
 
-    Nhà tuyển dụng:
+Nhà tuyển dụng:
 -Đăng tin tuyển dụng mới
 -Quản lý các tin đã đăng
 -Theo dõi và quản lý ứng viên ứng tuyển

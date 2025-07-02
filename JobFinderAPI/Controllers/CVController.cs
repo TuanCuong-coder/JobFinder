@@ -151,7 +151,7 @@ namespace JobFinderAPI.Controllers
             }
         }
 
-        // Xem CV từ Nhà Tuyển Dụng (bất kỳ Nhà Tuyển Dụng nào cũng có thể xem)
+        // Xem CV - NTD(bất kỳ Nhà Tuyển Dụng nào cũng có thể xem)
         [HttpGet("xem-cv-ntd/{cvId}")]
         public async Task<IActionResult> XemCVTuNhaTuyenDung(int cvId)
         {

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  ScrollView,
 } from 'react-native';
 import api from '../../services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -61,84 +62,100 @@ const ChinhSuaCV = ({route, navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <ScrollView contentContainerStyle={styles.cvEditorWrapper}>
+      <View style={styles.topBar}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Hủy</Text>
+          <Text style={styles.topAction}>Hủy</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Chỉnh sửa CV</Text>
+        <Text style={styles.topTitle}>Chỉnh sửa CV</Text>
         <TouchableOpacity onPress={handleSaveChanges}>
-          <Text style={styles.buttonText}>Lưu</Text>
+          <Text style={styles.topAction}>Lưu</Text>
         </TouchableOpacity>
       </View>
 
       <TextInput
         value={tieuDe}
         onChangeText={setTieuDe}
-        style={styles.input}
+        style={styles.inputField}
         placeholder="Tiêu đề CV"
       />
+
       <TextInput
         value={thongTin?.thongTinCaNhan || ''}
-        onChangeText={text => setThongTin({...thongTin, thongTinCaNhan: text})}
-        style={styles.input}
+        onChangeText={text =>
+          setThongTin({...thongTin, thongTinCaNhan: text})
+        }
+        style={styles.inputField}
         placeholder="Thông tin cá nhân"
+        multiline
       />
       <TextInput
         value={thongTin?.thongTinLienHe || ''}
-        onChangeText={text => setThongTin({...thongTin, thongTinLienHe: text})}
-        style={styles.input}
+        onChangeText={text =>
+          setThongTin({...thongTin, thongTinLienHe: text})
+        }
+        style={styles.inputField}
         placeholder="Thông tin liên hệ"
+        multiline
       />
       <TextInput
         value={thongTin?.hocVan || ''}
         onChangeText={text => setThongTin({...thongTin, hocVan: text})}
-        style={styles.input}
+        style={styles.inputField}
         placeholder="Học vấn"
+        multiline
       />
       <TextInput
         value={thongTin?.kyNang || ''}
         onChangeText={text => setThongTin({...thongTin, kyNang: text})}
-        style={styles.input}
+        style={styles.inputField}
         placeholder="Các kỹ năng"
+        multiline
       />
       <TextInput
         value={thongTin?.kinhNghiem || ''}
-        onChangeText={text => setThongTin({...thongTin, kinhNghiem: text})}
-        style={styles.input}
+        onChangeText={text =>
+          setThongTin({...thongTin, kinhNghiem: text})
+        }
+        style={styles.inputField}
         placeholder="Kinh nghiệm làm việc"
+        multiline
       />
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: '#fff',
+  cvEditorWrapper: {
+    flexGrow: 1,
+    padding: 20,
+    backgroundColor: '#f9fafa',
   },
-  header: {
+  topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 20,
   },
-  title: {
+  topTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: '700',
+    color: '#2E7D32',
   },
-  buttonText: {
+  topAction: {
     fontSize: 16,
-    color: '#FF5252',
+    color: '#F44336',
+    fontWeight: '500',
   },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
+  inputField: {
     borderWidth: 1,
-    marginBottom: 10,
-    padding: 8,
-    borderRadius: 5,
+    borderColor: '#bbb',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 14,
+    marginBottom: 14,
+    backgroundColor: '#fff',
+    textAlignVertical: 'top',
   },
 });
 

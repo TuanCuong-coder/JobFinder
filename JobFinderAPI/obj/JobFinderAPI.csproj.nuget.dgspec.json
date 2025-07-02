@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Mobile\\JobFinderApp\\JobFinderAPI\\JobFinderAPI.csproj": {}
+    "D:\\Mobile\\JobFinder\\JobFinderAPI\\JobFinderAPI.csproj": {}
   },
   "projects": {
-    "D:\\Mobile\\JobFinderApp\\JobFinderAPI\\JobFinderAPI.csproj": {
+    "D:\\Mobile\\JobFinder\\JobFinderAPI\\JobFinderAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Mobile\\JobFinderApp\\JobFinderAPI\\JobFinderAPI.csproj",
+        "projectUniqueName": "D:\\Mobile\\JobFinder\\JobFinderAPI\\JobFinderAPI.csproj",
         "projectName": "JobFinderAPI",
-        "projectPath": "D:\\Mobile\\JobFinderApp\\JobFinderAPI\\JobFinderAPI.csproj",
+        "projectPath": "D:\\Mobile\\JobFinder\\JobFinderAPI\\JobFinderAPI.csproj",
         "packagesPath": "C:\\Users\\vubat\\.nuget\\packages\\",
-        "outputPath": "D:\\Mobile\\JobFinderApp\\JobFinderAPI\\obj\\",
+        "outputPath": "D:\\Mobile\\JobFinder\\JobFinderAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

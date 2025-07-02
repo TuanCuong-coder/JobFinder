@@ -80,7 +80,6 @@ namespace JobFinderAPI.Controllers
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             var soLuong = await _context.ThongBaos
                 .CountAsync(tb => tb.NguoiNhanId == userId && tb.TrangThai == "chua_doc");
-
             return Ok(new { soLuong });
         }
     }

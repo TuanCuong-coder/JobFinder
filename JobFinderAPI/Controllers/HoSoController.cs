@@ -88,23 +88,20 @@ namespace JobFinderAPI.Controllers
             }
 
             // Xử lý lĩnh vực: Xóa các lĩnh vực không được chọn và giữ lại các lĩnh vực đã chọn
-var linhVucCu = _context.LinhVucNguoiDungs.Where(x => x.NguoiDungId == userId);
-_context.LinhVucNguoiDungs.RemoveRange(linhVucCu);
+            var linhVucCu = _context.LinhVucNguoiDungs.Where(x => x.NguoiDungId == userId);
+            _context.LinhVucNguoiDungs.RemoveRange(linhVucCu);
 
-if (dto.LinhVucIds != null && dto.LinhVucIds.Any())
-{
-    var linhVucMoi = dto.LinhVucIds.Select(id => new LinhVucNguoiDung
-    {
-        NguoiDungId = userId,
-        LinhVucId = id
-    });
+            if (dto.LinhVucIds != null && dto.LinhVucIds.Any())
+                {
+                 var linhVucMoi = dto.LinhVucIds.Select(id => new LinhVucNguoiDung
+                     {
+                         NguoiDungId = userId,
+                        LinhVucId = id
+                  });
 
-    _context.LinhVucNguoiDungs.AddRange(linhVucMoi);
-}
-
-
+             _context.LinhVucNguoiDungs.AddRange(linhVucMoi);
+                }
             await _context.SaveChangesAsync();
-
             return Ok(new { message = "Cập nhật hồ sơ thành công." });
         }
     }

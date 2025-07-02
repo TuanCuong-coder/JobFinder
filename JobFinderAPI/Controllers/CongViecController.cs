@@ -40,16 +40,16 @@ namespace JobFinderAPI.Controllers
 
             return Ok(list);
         }
-// GET api/CongViec/{id}
-[HttpGet("{id}")]
-public async Task<IActionResult> LayChiTietCongViec(int id)
-{
-    var congViec = await _context.CongViecs
-        .Include(cv => cv.LinhVuc)
-        .Include(cv => cv.HinhThuc)
-        .Include(cv => cv.NhaTuyenDung)
-        .Where(cv => cv.Id == id)
-        .Select(cv => new {
+    // GET api/CongViec/{id}
+    [HttpGet("{id}")]
+    public async Task<IActionResult> LayChiTietCongViec(int id)
+        {
+            var congViec = await _context.CongViecs
+            .Include(cv => cv.LinhVuc)
+            .Include(cv => cv.HinhThuc)
+            .Include(cv => cv.NhaTuyenDung)
+            .Where(cv => cv.Id == id)
+            .Select(cv => new {
             cv.Id,
             cv.TieuDe,
             cv.MoTa,
@@ -59,14 +59,12 @@ public async Task<IActionResult> LayChiTietCongViec(int id)
             cv.NgayDang
         })
         .FirstOrDefaultAsync();
-
-    if (congViec == null)
+        if (congViec == null)
         return NotFound();
+        return Ok(congViec);
+    }
 
-    return Ok(congViec);
-}
-
-        // GET api/CongViec/goi-y
+        // goi y cong viec
         [HttpGet("goi-y")]
         [Authorize]
         public async Task<IActionResult> GoiYCongViec()
@@ -76,7 +74,6 @@ public async Task<IActionResult> LayChiTietCongViec(int id)
                 .Where(x => x.NguoiDungId == userId)
                 .Select(x => x.LinhVucId)
                 .ToListAsync();
-
             var suggestions = await _context.CongViecs
                 .Where(cv => fieldIds.Contains(cv.LinhVucId))
                 .Select(cv => new {
@@ -87,7 +84,6 @@ public async Task<IActionResult> LayChiTietCongViec(int id)
                     cv.NgayDang
                 })
                 .ToListAsync();
-
             return Ok(suggestions);
         }
     }

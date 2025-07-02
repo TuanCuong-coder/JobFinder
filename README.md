@@ -1,4 +1,4 @@
-                                                            Đặc Tả Hệ Thống Ứng Dụng
+Đặc Tả Hệ Thống Ứng Dụng
 Tên ứng dụng:
 JobFinder – Nền tảng kết nối người tìm việc và nhà tuyển dụng
 

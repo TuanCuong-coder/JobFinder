@@ -1,14 +1,12 @@
 import React, {useEffect} from 'react';
 import {View, Text, ActivityIndicator} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 const LoadingScreen = ({navigation}) => {
   useEffect(() => {
     const checkLogin = async () => {
-      try {
-        const token = await AsyncStorage.getItem('token');
+      try { 
         const role = await AsyncStorage.getItem('role');
-
+        const token = await AsyncStorage.getItem('token');
         if (token && role) {
           if (role === 'ung_vien') {
             navigation.reset({
@@ -31,10 +29,8 @@ const LoadingScreen = ({navigation}) => {
         navigation.replace('DangNhap');
       }
     };
-
     checkLogin();
   }, []);
-
   return (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <ActivityIndicator size="large" />
@@ -42,5 +38,4 @@ const LoadingScreen = ({navigation}) => {
     </View>
   );
 };
-
 export default LoadingScreen;

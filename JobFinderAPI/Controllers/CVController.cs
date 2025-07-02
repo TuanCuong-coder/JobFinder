@@ -51,7 +51,6 @@ namespace JobFinderAPI.Controllers
             try
             {
                 var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
                 var cv = new Cv
                 {
                     UngVienId = userId,
@@ -60,10 +59,8 @@ namespace JobFinderAPI.Controllers
                     AnhDaiDien = request.AnhDaiDien,
                     NgayTao = DateTime.Now
                 };
-
                 _context.Cvs.Add(cv);
                 await _context.SaveChangesAsync();
-
                 return Ok(new { message = "Tạo CV thành công", id = cv.Id });
             }
             catch (Exception ex)
@@ -89,10 +86,8 @@ namespace JobFinderAPI.Controllers
                         ngayTao = c.NgayTao
                     })
                     .FirstOrDefaultAsync();
-
                 if (cv == null)
                     return NotFound("Không tìm thấy CV");
-
                 return Ok(cv);
             }
             catch (Exception ex)
@@ -109,7 +104,6 @@ namespace JobFinderAPI.Controllers
             try
             {
                 var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
-
                 var cv = await _context.Cvs.FirstOrDefaultAsync(c => c.Id == id && c.UngVienId == userId);
                 if (cv == null)
                     return NotFound("Không tìm thấy CV");
@@ -118,7 +112,6 @@ namespace JobFinderAPI.Controllers
                 cv.NoiDung = request.NoiDung ?? cv.NoiDung;
                 cv.AnhDaiDien = request.AnhDaiDien ?? cv.AnhDaiDien;
                 await _context.SaveChangesAsync();
-
                 return Ok(new { message = "Cập nhật CV thành công" });
             }
             catch (Exception ex)
@@ -150,7 +143,6 @@ namespace JobFinderAPI.Controllers
                 return StatusCode(500, "Lỗi server: " + ex.Message);
             }
         }
-
         // Xem CV - NTD
         [HttpGet("xem-cv-ntd/{cvId}")]
         public async Task<IActionResult> XemCVTuNhaTuyenDung(int cvId)

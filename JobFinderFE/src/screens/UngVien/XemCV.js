@@ -38,10 +38,6 @@ const XemCV = ({route, navigation}) => {
         setNoiDung(nd || {});
       } catch (error) {
         console.error('Lỗi khi tải CV:', error);
-        if (error.response) {
-          console.error('Status:', error.response.status);
-          console.error('Message:', error.response.data);
-        }
       }
     };
 
@@ -50,86 +46,96 @@ const XemCV = ({route, navigation}) => {
 
   if (!cvData) {
     return (
-      <View style={styles.container}>
+      <View style={styles.cvWrapper}>
         <Text>Đang tải CV...</Text>
       </View>
     );
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.title}>{cvData.tieuDe}</Text>
+    <ScrollView contentContainerStyle={styles.cvWrapper}>
+      <View style={styles.cvHeader}>
+        <Text style={styles.cvTitle}>{cvData.tieuDe}</Text>
       </View>
 
-      <Text style={styles.label}>Thông tin cá nhân</Text>
+      <Text style={styles.sectionTitle}>Thông tin cá nhân</Text>
       <TextInput
         value={noiDung.thongTinCaNhan || ''}
-        style={styles.input}
+        style={styles.readonlyBox}
         editable={false}
+        multiline
       />
 
-      <Text style={styles.label}>Thông tin liên hệ</Text>
+      <Text style={styles.sectionTitle}>Thông tin liên hệ</Text>
       <TextInput
         value={noiDung.thongTinLienHe || ''}
-        style={styles.input}
+        style={styles.readonlyBox}
         editable={false}
+        multiline
       />
 
-      <Text style={styles.label}>Học vấn</Text>
+      <Text style={styles.sectionTitle}>Học vấn</Text>
       <TextInput
         value={noiDung.hocVan || ''}
-        style={styles.input}
+        style={styles.readonlyBox}
         editable={false}
+        multiline
       />
 
-      <Text style={styles.label}>Kỹ năng</Text>
+      <Text style={styles.sectionTitle}>Kỹ năng</Text>
       <TextInput
         value={noiDung.kyNang || ''}
-        style={styles.input}
+        style={styles.readonlyBox}
         editable={false}
+        multiline
       />
 
-      <Text style={styles.label}>Kinh nghiệm</Text>
+      <Text style={styles.sectionTitle}>Kinh nghiệm</Text>
       <TextInput
         value={noiDung.kinhNghiem || ''}
-        style={styles.input}
+        style={styles.readonlyBox}
         editable={false}
+        multiline
       />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 16,
-    backgroundColor: '#fff',
+  cvWrapper: {
+    padding: 20,
+    backgroundColor: '#f4f7f9',
     flexGrow: 1,
   },
-  header: {
+  cvHeader: {
+    paddingBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
     marginBottom: 20,
   },
-  title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginTop: 8,
+  cvTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#2E7D32',
+    textAlign: 'center',
   },
-  buttonText: {
-    fontSize: 16,
-    color: '#FF5252',
-  },
-  label: {
+  sectionTitle: {
     fontSize: 16,
     fontWeight: '600',
-    marginTop: 12,
-    marginBottom: 4,
+    marginTop: 16,
+    marginBottom: 6,
+    color: '#444',
   },
-  input: {
+  readonlyBox: {
     borderColor: '#ccc',
     borderWidth: 1,
-    borderRadius: 6,
-    padding: 10,
-    backgroundColor: '#f9f9f9',
+    borderRadius: 8,
+    padding: 12,
+    backgroundColor: '#fff',
+    fontSize: 14,
+    color: '#111',
+    minHeight: 50,
+    textAlignVertical: 'top',
   },
 });
 

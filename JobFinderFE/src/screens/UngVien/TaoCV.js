@@ -12,9 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../services/config';
 
 const TaoCV = ({navigation}) => {
-  const [tieuDe, setTieuDe] = useState(
-    'CV_' + Math.floor(Math.random() * 1000),
-  );
+  const [tieuDe, setTieuDe] = useState('CV_' + Math.floor(Math.random() * 1000));
   const [thongTin, setThongTin] = useState({
     thongTinCaNhan: '',
     thongTinLienHe: '',
@@ -54,86 +52,100 @@ const TaoCV = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
+    <View style={styles.pageWrapper}>
+      <View style={styles.topBar}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Hủy</Text>
+          <Text style={styles.actionText}>Hủy</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>Tạo CV</Text>
+        <Text style={styles.screenTitle}>Tạo mới CV</Text>
         <TouchableOpacity onPress={handleSaveCV}>
-          <Text style={styles.buttonText}>Lưu</Text>
+          <Text style={styles.actionText}>Lưu</Text>
         </TouchableOpacity>
       </View>
 
       <TextInput
         value={tieuDe}
         onChangeText={setTieuDe}
-        style={styles.input}
+        style={styles.formBox}
         placeholder="Tiêu đề CV"
+        placeholderTextColor="#888"
       />
 
-      
       <TextInput
         value={thongTin.thongTinCaNhan}
         onChangeText={text => setThongTin({...thongTin, thongTinCaNhan: text})}
-        style={styles.input}
+        style={styles.formBox}
         placeholder="Thông tin cá nhân"
+        placeholderTextColor="#888"
       />
+
       <TextInput
         value={thongTin.thongTinLienHe}
         onChangeText={text => setThongTin({...thongTin, thongTinLienHe: text})}
-        style={styles.input}
+        style={styles.formBox}
         placeholder="Thông tin liên hệ"
+        placeholderTextColor="#888"
       />
+
       <TextInput
         value={thongTin.hocVan}
         onChangeText={text => setThongTin({...thongTin, hocVan: text})}
-        style={styles.input}
+        style={styles.formBox}
         placeholder="Học vấn"
+        placeholderTextColor="#888"
       />
+
       <TextInput
         value={thongTin.kyNang}
         onChangeText={text => setThongTin({...thongTin, kyNang: text})}
-        style={styles.input}
-        placeholder="Các kỹ năng"
+        style={styles.formBox}
+        placeholder="Kỹ năng"
+        placeholderTextColor="#888"
       />
+
       <TextInput
         value={thongTin.kinhNghiem}
         onChangeText={text => setThongTin({...thongTin, kinhNghiem: text})}
-        style={styles.input}
+        style={styles.formBox}
         placeholder="Kinh nghiệm làm việc"
+        placeholderTextColor="#888"
       />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  pageWrapper: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#f1f6f9',
+    padding: 20,
   },
-  header: {
+  topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 24,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  screenTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#222',
   },
-  buttonText: {
+  actionText: {
     fontSize: 16,
-    color: '#FF5252',
+    color: '#2E7D32',
+    fontWeight: '500',
   },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
+  formBox: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    borderColor: '#BDBDBD',
     borderWidth: 1,
-    marginBottom: 10,
-    padding: 8,
-    borderRadius: 5,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    fontSize: 15,
+    marginBottom: 12,
+    color: '#111',
   },
 });
 

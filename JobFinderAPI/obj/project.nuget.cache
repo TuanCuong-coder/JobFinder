@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "K0c20V3I69s=",
+  "dgSpecHash": "sPjU1asgMZ0=",
   "success": true,
-  "projectFilePath": "D:\\Mobile\\JobFinderApp\\JobFinderAPI\\JobFinderAPI.csproj",
+  "projectFilePath": "D:\\Mobile\\JobFinder\\JobFinderAPI\\JobFinderAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\vubat\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\vubat\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

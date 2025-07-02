@@ -49,27 +49,27 @@ const DangKy = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.wrapper}>
       <Image
         source={require('../../assets/react-logo.png')}
-        style={styles.logo}
+        style={styles.logoImage}
         resizeMode="contain"
       />
-      <Text style={styles.welcomeText}>Chào mừng bạn đến với JobFinder</Text>
-      <Text style={styles.title}>Đăng ký tài khoản</Text>
+      <Text style={styles.introText}>Chào mừng đến với JobFinder</Text>
+      <Text style={styles.heading}>Tạo tài khoản mới</Text>
 
       <TextInput
-        style={styles.input}
-        placeholder="Họ tên"
-        placeholderTextColor="#777"
+        style={styles.textField}
+        placeholder="Họ và tên"
+        placeholderTextColor="#666"
         value={hoTen}
         onChangeText={setHoTen}
       />
 
       <TextInput
-        style={styles.input}
+        style={styles.textField}
         placeholder="Email"
-        placeholderTextColor="#777"
+        placeholderTextColor="#666"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
@@ -77,113 +77,118 @@ const DangKy = () => {
       />
 
       <TextInput
-        style={styles.input}
+        style={styles.textField}
         placeholder="Mật khẩu"
-        placeholderTextColor="#777"
+        placeholderTextColor="#666"
         value={matKhau}
         onChangeText={setMatKhau}
         secureTextEntry
       />
 
       <TextInput
-        style={styles.input}
+        style={styles.textField}
         placeholder="Xác nhận mật khẩu"
-        placeholderTextColor="#777"
+        placeholderTextColor="#666"
         value={confirmMatKhau}
         onChangeText={setConfirmMatKhau}
         secureTextEntry
       />
 
-      <Text style={styles.label}>Chọn vai trò:</Text>
-      <View style={styles.pickerWrapper}>
+      <Text style={styles.roleLabel}>Vai trò:</Text>
+      <View style={styles.selectContainer}>
         <Picker
           selectedValue={vaiTro}
           onValueChange={value => setVaiTro(value)}
-          style={styles.picker}>
+          style={styles.dropdown}>
           <Picker.Item label="Ứng viên" value="ung_vien" />
           <Picker.Item label="Nhà tuyển dụng" value="nha_tuyen_dung" />
         </Picker>
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
-        <Text style={styles.buttonText}>Đăng ký</Text>
+      <TouchableOpacity style={styles.submitButton} onPress={handleRegister}>
+        <Text style={styles.submitText}>Đăng ký ngay</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Text style={styles.linkText}>Đã có tài khoản? Đăng nhập</Text>
+        <Text style={styles.switchText}>Bạn đã có tài khoản? Đăng nhập</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 24,
+  wrapper: {
     flex: 1,
+    backgroundColor: '#f4f7f9',
+    padding: 22,
     justifyContent: 'center',
+  },
+  logoImage: {
+    width: 90,
+    height: 90,
+    alignSelf: 'center',
+    marginBottom: 16,
+  },
+  introText: {
+    fontSize: 17,
+    textAlign: 'center',
+    color: '#4CAF50',
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  heading: {
+    fontSize: 24,
+    textAlign: 'center',
+    color: '#1A1A1A',
+    fontWeight: '700',
+    marginBottom: 20,
+  },
+  textField: {
+    borderColor: '#BDBDBD',
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    fontSize: 15,
+    marginBottom: 12,
+    color: '#111',
     backgroundColor: '#fff',
   },
-  logo: {
-    width: 100,
-    height: 100,
-    alignSelf: 'center',
-    marginBottom: 12,
-  },
-  welcomeText: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginBottom: 12,
-    color: '#388E3C',
-    fontWeight: '500',
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-    color: '#222',
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 14,
-    color: '#000',
-  },
-  label: {
-    marginBottom: 8,
-    fontSize: 16,
-    fontWeight: '500',
+  roleLabel: {
+    fontSize: 15,
     color: '#333',
+    fontWeight: '500',
+    marginBottom: 6,
   },
-  pickerWrapper: {
+  selectContainer: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
+    borderColor: '#BDBDBD',
+    borderRadius: 10,
     marginBottom: 20,
+    overflow: 'hidden',
+    backgroundColor: '#fff',
   },
-  picker: {
+  dropdown: {
     height: 50,
     width: '100%',
   },
-  button: {
-    backgroundColor: '#388E3C',
-    padding: 14,
-    borderRadius: 8,
+  submitButton: {
+    backgroundColor: '#4CAF50',
+    paddingVertical: 14,
+    borderRadius: 10,
     alignItems: 'center',
     marginBottom: 16,
   },
-  buttonText: {
+  submitText: {
     color: '#fff',
-    fontWeight: '600',
     fontSize: 16,
+    fontWeight: '600',
   },
-  linkText: {
-    color: '#388E3C',
+  switchText: {
+    color: '#4CAF50',
     textAlign: 'center',
-    marginTop: 8,
     fontWeight: '500',
+    fontSize: 14,
   },
 });
 

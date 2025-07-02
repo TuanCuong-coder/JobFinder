@@ -3,7 +3,6 @@ import {
   View,
   Text,
   TextInput,
-  Button,
   Alert,
   StyleSheet,
   TouchableOpacity,
@@ -52,97 +51,101 @@ const DangNhap = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.screen}>
       <Image
         source={require('../../assets/react-logo.png')}
-        style={styles.logo}
+        style={styles.brandLogo}
         resizeMode="contain"
       />
-      <Text style={styles.welcomeText}>Chào mừng bạn đến với JobFinder</Text>
 
-      <Text style={styles.title}>Đăng nhập</Text>
+      <Text style={styles.greeting}>Rất vui được gặp lại bạn!</Text>
+      <Text style={styles.heading}>Đăng nhập vào JobFinder</Text>
+
       <TextInput
-        style={styles.input}
-        placeholder="Email"
-        placeholderTextColor="#888"
+        style={styles.formInput}
+        placeholder="Nhập email"
+        placeholderTextColor="#777"
         value={email}
         onChangeText={setEmail}
         autoCapitalize="none"
         keyboardType="email-address"
       />
+
       <TextInput
-        style={styles.input}
-        placeholder="Mật khẩu"
-        placeholderTextColor="#888"
+        style={styles.formInput}
+        placeholder="Nhập mật khẩu"
+        placeholderTextColor="#777"
         value={matKhau}
         onChangeText={setMatKhau}
         secureTextEntry
       />
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.loginButton} onPress={handleDangNhap}>
-          <Text style={styles.loginButtonText}>Đăng nhập</Text>
-        </TouchableOpacity>
-      </View>
+
+      <TouchableOpacity style={styles.signinBtn} onPress={handleDangNhap}>
+        <Text style={styles.signinText}>Đăng nhập</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity onPress={() => navigation.navigate('DangKy')}>
-        <Text style={styles.linkText}>Chưa có tài khoản? Đăng ký</Text>
+        <Text style={styles.switchText}>Bạn chưa có tài khoản? Đăng ký</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    padding: 24,
+  screen: {
     flex: 1,
+    backgroundColor: '#f4f7f9',
+    padding: 24,
     justifyContent: 'center',
-    backgroundColor: '#fff',
   },
-  logo: {
-    width: 100,
-    height: 100,
+  brandLogo: {
+    width: 90,
+    height: 90,
     alignSelf: 'center',
-    marginBottom: 12,
+    marginBottom: 20,
   },
-  welcomeText: {
-    fontSize: 18,
+  greeting: {
+    fontSize: 17,
     textAlign: 'center',
     color: '#388E3C',
-    marginBottom: 16,
-    fontWeight: '500',
+    fontWeight: '600',
+    marginBottom: 8,
   },
-  title: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginBottom: 20,
+  heading: {
+    fontSize: 24,
     textAlign: 'center',
+    fontWeight: '700',
     color: '#222',
+    marginBottom: 24,
   },
-  input: {
+  formInput: {
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
-    color: '#000',
+    borderColor: '#BDBDBD',
+    borderRadius: 10,
+    paddingHorizontal: 14,
+    paddingVertical: 12,
+    fontSize: 15,
+    marginBottom: 14,
+    backgroundColor: '#fff',
+    color: '#111',
   },
-  buttonContainer: {
-    marginBottom: 16,
-  },
-  loginButton: {
+  signinBtn: {
     backgroundColor: '#388E3C',
     paddingVertical: 14,
-    borderRadius: 8,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginBottom: 16,
   },
-  loginButtonText: {
+  signinText: {
     color: '#fff',
-    textAlign: 'center',
-    fontWeight: '600',
     fontSize: 16,
+    fontWeight: '600',
   },
-  linkText: {
-    color: '#388E3C',
+  switchText: {
     textAlign: 'center',
-    marginTop: 12,
+    fontSize: 14,
+    color: '#388E3C',
+    fontWeight: '500',
   },
 });
 

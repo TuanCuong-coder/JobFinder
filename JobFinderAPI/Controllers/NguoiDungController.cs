@@ -26,10 +26,7 @@ namespace JobFinderAPI.Controllers
             if (await _context.NguoiDungs.AnyAsync(x => x.Email == dto.Email))
                 return BadRequest(new { message = "Email đã tồn tại" });
 
-            // Validate vai trò (role)
-            if (string.IsNullOrEmpty(dto.VaiTro) || (dto.VaiTro != "ung_vien" && dto.VaiTro != "nha_tuyen_dung"))
-                return BadRequest(new { message = "Vai trò không hợp lệ" });
-
+         
             var user = new NguoiDung
             {
                 HoTen = dto.HoTen,
@@ -79,9 +76,7 @@ public async Task<IActionResult> LayThongTin()
     var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
     var user = await _context.NguoiDungs.FindAsync(userId);
 
-    if (user == null)
-        return NotFound(new { message = "Không tìm thấy người dùng" });
-
+  
     return Ok(new
     {
         id = user.Id,
@@ -99,10 +94,7 @@ public async Task<IActionResult> SoLuongCongViec()
 {
     var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-    var daUngTuyen = await _context.NopDons
-        .CountAsync(n => n.UngVienId == userId);
-    var uaThich = await _context.YeuThiches
-        .CountAsync(y => y.UngVienId == userId);
+
     var fieldIds = await _context.LinhVucNguoiDungs
         .Where(lv => lv.NguoiDungId == userId)
         .Select(lv => lv.LinhVucId)
@@ -112,8 +104,6 @@ public async Task<IActionResult> SoLuongCongViec()
         .CountAsync(j => fieldIds.Contains(j.LinhVucId));
 
     return Ok(new {
-        daUngTuyen,
-        uaThich,
         phuHop
     });
 }

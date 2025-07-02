@@ -91,18 +91,17 @@ namespace JobFinderAPI.Controllers
             return Ok(new { message = "Xóa đơn ứng tuyển thành công!" });
         }
 
-[HttpGet("ung-vien-da-ung-tuyen/{congViecId}")]
-[Authorize]
-public async Task<IActionResult> LayUngVienTheoCongViec(int congViecId)
-{
-    var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+    [HttpGet("ung-vien-da-ung-tuyen/{congViecId}")]
+    [Authorize]
+    public async Task<IActionResult> LayUngVienTheoCongViec(int congViecId)
+    {
+        var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+        var congViec = await _context.CongViecs.FindAsync(congViecId);
+        if (congViec == null) return NotFound("Không tìm thấy công việc.");
+        if (congViec.NhaTuyenDungId != userId)
+            return Forbid("Bạn không có quyền xem danh sách ứng viên công việc này.");
 
-    var congViec = await _context.CongViecs.FindAsync(congViecId);
-    if (congViec == null) return NotFound("Không tìm thấy công việc.");
-    if (congViec.NhaTuyenDungId != userId)
-        return Forbid("Bạn không có quyền xem danh sách ứng viên công việc này.");
-
-    var danhSach = await _context.NopDons
+        var danhSach = await _context.NopDons
         .Where(nd => nd.CongViecId == congViecId)
         .Include(nd => nd.UngVien)
         .Include(nd => nd.Cv)
@@ -121,9 +120,7 @@ public async Task<IActionResult> LayUngVienTheoCongViec(int congViecId)
             );
         }
     }
-
     await _context.SaveChangesAsync();
-
     // Trả về kết quả
     var ketQua = danhSach.Select(nd => new
     {
@@ -135,9 +132,7 @@ public async Task<IActionResult> LayUngVienTheoCongViec(int congViecId)
         cvTieuDe = nd.Cv.TieuDe,
         ngayNop = nd.NgayNop
     });
-
     return Ok(ketQua);
-}
-
+    }
     }
 }

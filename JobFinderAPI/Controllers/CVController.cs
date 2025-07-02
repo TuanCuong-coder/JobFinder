@@ -43,35 +43,6 @@ namespace JobFinderAPI.Controllers
             }
         }
 
-        // Lấy chi tiết 1 CV
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCVById(int id)
-        {
-            try
-            {
-                var cv = await _context.Cvs
-                    .Where(c => c.Id == id)
-                    .Select(c => new
-                    {
-                        id = c.Id,
-                        tieuDe = c.TieuDe,
-                        noiDung = c.NoiDung,
-                        anhDaiDien = c.AnhDaiDien,
-                        ngayTao = c.NgayTao
-                    })
-                    .FirstOrDefaultAsync();
-
-                if (cv == null)
-                    return NotFound("Không tìm thấy CV");
-
-                return Ok(cv);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, "Lỗi server: " + ex.Message);
-            }
-        }
-
         // Tạo mới CV
         [HttpPost]
         [Authorize]
@@ -94,6 +65,35 @@ namespace JobFinderAPI.Controllers
                 await _context.SaveChangesAsync();
 
                 return Ok(new { message = "Tạo CV thành công", id = cv.Id });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Lỗi server: " + ex.Message);
+            }
+        }
+
+        // Lấy chi tiết 1 CV
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCVById(int id)
+        {
+            try
+            {
+                var cv = await _context.Cvs
+                    .Where(c => c.Id == id)
+                    .Select(c => new
+                    {
+                        id = c.Id,
+                        tieuDe = c.TieuDe,
+                        noiDung = c.NoiDung,
+                        anhDaiDien = c.AnhDaiDien,
+                        ngayTao = c.NgayTao
+                    })
+                    .FirstOrDefaultAsync();
+
+                if (cv == null)
+                    return NotFound("Không tìm thấy CV");
+
+                return Ok(cv);
             }
             catch (Exception ex)
             {
@@ -151,7 +151,7 @@ namespace JobFinderAPI.Controllers
             }
         }
 
-        // Xem CV - NTD(bất kỳ Nhà Tuyển Dụng nào cũng có thể xem)
+        // Xem CV - NTD
         [HttpGet("xem-cv-ntd/{cvId}")]
         public async Task<IActionResult> XemCVTuNhaTuyenDung(int cvId)
         {
@@ -165,7 +165,7 @@ namespace JobFinderAPI.Controllers
                 if (cv == null)
                     return NotFound("Không tìm thấy CV");
 
-                // Trả về chi tiết CV cho tất cả người dùng
+                // Trả về chi tiết CV 
                 return Ok(new
                 {
                     id = cv.Id,
